@@ -1,0 +1,381 @@
+LEC JADE July 21
+
+Jade is a templating language that extends the funcitonality of html.
+In Jade you will not see angle brackets or closing tags but there is a whole lot
+of nesting.  Everyting in Jade is deliniated by whitespace, so you must know what is tabbed inside of what.
+
+
+Run yo and the RefactorU express scaffold.
+
+See the app.js set-up in the demo lecture code
+
+We will have 2 jade files, layout and index
+or layout.jade and index.jade
+
+
+
+
+run nodemon in your command line and it will tell you 
+what port to go to
+
+google sublime pa
+
+hit command shift p and then type in "install"
+
+
+
+
+localhost7257 for example
+
+
+we are rendering our index.jade file
+
+when you call render, you need to pass in the name of the template itself
+
+res.render("index");  for example 
+
+Let's take a look at our index file:
+///////////////////////////////////////////
+extends layout
+
+block content
+	h1 Hello Boulder!
+
+
+	??????????????????????????????????????????????
+
+WE have index.jade and layout.jade
+
+extends layout-- this refers to layout.jade
+the files now have the relationship of inheritance
+
+
+We are saying the index file should be inherited by the layout file
+we need to say what will go where in teh file we are extending
+
+
+extends layout
+//hello jade
+block content
+	h1 Hello Boulder!
+	p I am a paragraph
+
+block otherContent
+	h2 Hello there, I'm cool too
+
+
+(in html body you put block content in the body)
+
+body
+ block content
+
+
+	Above we define block content and inject it into another file
+
+	We basically tell the layout file "this is where this block of content lives"
+
+
+Basic syntax for jade...
+heavily dependent on white space so be consistent with spacing and tabbing.  different from html, which is all about the tags.  Jade cares about whitespace.  Below is an example of Jade.
+
+
+html(lang="en")
+	head
+		meta(charset="utf-8")
+		title Untitled
+
+	body
+
+		block content
+
+		div
+
+			block otherContent
+
+
+
+
+To write a tag name we do it without < >.  For a paragraph it is just p.  For a div just write div.  
+
+YOU CAN WRITE HTML IN JADE BUT BE VERY CAREFUL TO NEST EVERYTHING CORRECTLY
+
+To add content to tag names you do it after a space
+
+p This is a paragraph about birds...   
+
+ul
+	li
+	li
+	li
+
+
+	to nest you need to go down to the next line and indent
+
+In the example above our list items are siblings and the parent is the ul.  The list items are all indented the same amount.
+
+You can nest as many levels deep as you want to in jade. 
+
+
+
+We can also add content by using a pipe indented onto the next line, or you can just use a space after the last element
+
+div
+	div
+		div
+			div
+				| I am content in my direct parent div
+
+
+
+
+
+You don't want to use tag names for styling in css so you use .class, like in jquery and css
+
+
+p.my-paragraph.other-class.third-class This is a paragraph
+
+things can have ids and classes
+
+ul#my-list.other-class.third-class
+
+Elements can have other attributes besides ids and class
+
+you can have custom data attributes, such as forms.
+
+Below we start with a form and then the attributes are put in parentheses
+
+
+form(actin="/formSubmit", method="POST")  can tell it where to put, delete, post
+	input(name="food")
+	input(type="submit")
+
+
+
+to put content in, go to your app.js file
+
+For example...
+
+var siteCounter = 1   Let's say we want to pass this into our actual jade file.  We can use render and give it 2 arguments-- the name of the template and then an object full of data
+
+app.get("/", function(req, res) {
+	res.render("index") {
+		counter : siteCounter
+	});
+
+
+	siteCounter++
+
+
+to pass dynamic content you can
+use a #{counter}    hashtag and curly brackets  inside the jade file
+
+
+ex.  h3 Visitors so far: #{counter}
+
+
+or
+
+you can do it like below to inject a variable.  Below is nice because it can be placed inside of content / smack in the middle of the text.  
+
+h2 Visitors :
+h3= counter          the = DOES need to be right up against the tag name
+
+
+
+in app.js you can make an array of objects
+
+var foods = [
+	{name : "pineapple"}
+	name : "hagas"
+	name : "saag"
+
+]
+
+
+in jade
+
+block otherContent
+	h2 Best Foods Ever!
+	ul
+		li=foods[0].name
+		li=foods[1].name
+		li=foods[2].name
+
+
+This will evaluate into a string.  But you don't want to type all of these out or have empty spaces if some are removed
+
+Luckily, Jade is really good at looping.  In Jade we begin the loop inside of our ul
+
+block otherContent
+	h2 Best Foods Ever!
+	ul
+		for foodItem in foods
+			li=foodItem.name               here foodItem refers to a specific object
+
+	form(action="/submit", method="POST")
+		input(name="food")
+		input(type=submit)
+
+We could add a form with an action attribute so we can post the information somewhere
+We make an action route, such as action/submit and our method will be POST
+
+in app.js we have to add a post request
+
+app.post("/submit", function(req, res) {
+	
+
+} );    
+
+rec.query, req.params and req.body are the 3 objects that can hold data being sent to us from clients
+
+tell express the route you want and the route handler
+	
+req.params can be handled on any type of reqeust but are dynamic
+req.body is used in POST requests
+put and delete work identically with posts and can also carry data in the request body
+
+
+
+
+make sure your route is working before you keep going- use a console.log
+
+
+We can push more foods into our food object array
+
+foods.push({ name : req.body.food })
+
+res.redirect
+
+(we named the input "food" in our jade file)
+
+input(name="food")
+
+3 WAYS TO END A REQUEST
+
+send, render, redirect are the 3 ways to end a request
+
+you can do if/else conditional statement inside the jade
+
+for foodItem in foods
+	if foodItem.name === "pineapple"
+		li=foodItem.name
+	else
+		li yuck
+
+
+		else 
+ele
+you can do  ifs or if else
+
+
+
+
+If you write pure javascript in jade you must begin with a hyphen and end it with a hyphen if it goes down multiple lines.  hyphen comes before closing curly bracket -}
+
+-var myVar = "potato";
+
+-for(var i-0; i<5; i++)
+You can even mix and match javascript and jade
+but will be hectic if you do it too much
+
+JADE MIXINS are functions with layout content.  You can use mixins to generate content
+like functions mixins have 2 stages.  first call mixin  mixins are jade funcitons
+
+in jade:
+
+mixin foodList(food)
+	li #{food.name}	
+
+h1 Even better foods :
+ul
+
+	for foodItem in foods
+		+foodList(foodItem)
+
+
+
+
+
+to call a jade function you use 
++
+
+
+
+above we create a funcition called foodlist and tell it to expect parameters of food
+mixins can also take additional content
+
+mixins can take blocks
+
+mixin foodList(food)
+	li #{food.name}
+	if block
+		block
+
+
+
+BLOCK IS BUILT INTO THE MIXIN.  Block says "if I'm passing in something else, do it this way"
+
+like a function in js, you can't call a mixin until you have defined it
+
+
+		SEE ROB'S DEMO CODE FOR THIS LECTURE
+
+
+
+
+
+
+
+
+
+k
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

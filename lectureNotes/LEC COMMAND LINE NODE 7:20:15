@@ -1,0 +1,327 @@
+LEC COMMAND LINE NODE 7/20/15
+
+Intro COMMAND LINE NODE
+
+We can write a script so it waits for someone to make a web request, waiting for someone to request our URL
+
+Node is a place where you can run code to make web servers, mainly.  You can also get hardware access with node.  Can be used for web scraping.  
+
+Node is non-blocking;  can do multi things at the same time and nothing blocks anything else  ; a server-side programming language
+ Node is a javascrpt runtime-Node is another environment where jscrpt can run.
+
+ jscript traditionally runs in the browser
+ node js is the v8 engine from chrome
+
+ js at commmand line with nodejs vs jscrpt at the browser...
+
+ There is no window and no DOM at the command line
+
+ with node we are not in a browser
+ we don't have to deal with browser-based security restrictions
+
+or deal with limitations of other people's browsers/security restrictions
+
+With node you can access the filesystem, hardware, and network
+
+You can access the internet, as in send and receive requests, from the internet (kind of like a browser)
+
+Since there is no window there is not one global space;  we have multiple different files, each of which has its own scope
+
+USING “REQUIRE”
+
+you have to make use of special mechanisms to get files to share;  we REQUIRE our MODULES
+into other MODULES
+
+NODE REPL- read, eval, print, loop     
+
+go to command line and type node.  see the carat appear
+
+In sublime, create a js file  (ex. IntroNode.js)
+console.log("hello node")
+
+run file at command line-- type “node” and then the name of the file you want to run (ex. node IntroNode.js)
+console.log will show up in terminal not the browser 
+script tags will still show up in browser
+
+like with others commands at command line, you can put in arguments 
+
+Node is the name of the command that runs js
+
+We have access to the PROCESS OBJECT which is globally defined and tells you where a script is being run from
+
+console.log(process)
+
+The process object...
+Useful things include
+
+ARGument Vector = a list of all the arguments your script got at the command line
+
+console.log(processARGV)
+ GIVES you an array of two elements ...
+ node itself and then the name of the file you are running ex.
+ node helloNode.js
+
+remember if you are trying to get all the arguments passed into a node script, skip the first two which are trivial (node, name of script )  and which will always be the first two arguments
+Most important are arguments indexed at 2 thru infinity
+
+after node and name of script you can add any additional args, but since you are at the command line , put each argument in quotes
+
+spaces separate arguments, if you use strings you must use quotes around each item in the string.
+
+"argument" "argument" "argument"
+
+On the process object you can do 
+
+console.log(process.env)
+at the terminal you have an environment with pre-decided aspects;  computer name, 
+
+just type “env” at the command line -- will describe that environment
+
+from node you type “process.env” and it will give you the same info/terminal environment variables
+
+
+
+
+
+COMMAND K clears the screen at the terminal
+
+node helloNode.js
+
+Node can access everything you can access from the terminal
+
+Browser-based js is in a sandbox-- NODE IS NOT A SANDBOX!!!!
+
+you can write or download a node script that erases your hard-drive, so be careful!!!!
+
+Look at the community ratings on libraries before you download things
+
+*******************************************************************************
+IN-CLASS CHALLENGE
+write a node script that takes a string at the command line and reverses it 
+
+e.g.: node reverse.js "hello world"  should output "dlrow elloh"
+
+
+In JS  console.log("hello world")
+
+in command line
+
+console.log(process.argv[2].split("").reverse().join(""))
+
+node.reverse.js
+
+
+Put these in javascript...
+console.log("working")
+console.log(process.argv)
+
+
+There isn't a global scope, each node file has its own scope
+
+var allTheData = [1,2,3] js
+console.log(allTheData)
+we get an error "not defined"
+
+a file has to explicitly declare what file will be exported
+MODULE OBJECT  we are concerned about the exports property of the module object because it is the only thing accessible outside of this file
+
+
+If you have data in a file that you want to be accessible from outside, you have to assign it to 
+
+in js
+
+module.exports = allTheData
+
+in js you would say
+
+var allTheData = require("./helloNode.js")
+
+require is a function in node.js
+then pass in a path and a file (as in reqire fromfile/tofile)
+
+. = current folder
+
+
+When we require a file, node executes that file and then RETURNS whatever the value of that file is
+
+in terminal
+node
+
+DON'T PUT CONSOLE.LOG IN YOUR NODE FILES;  WILL SLOW THINGS DOWN
+
+When you require a file the whole file will be executed
+
+If you require the same file multiple times you can do so without duplicating the file over and over
+
+FILE SYSTEM ACCESS
+is another thing that node can do
+
+first we have to requrie the file system module
+
+var fs = require("fs")
+
+is how you require the file-system module
+methods now available include
+
+fs.writeFileSync("ouput.txt", "this is text")  takes 2 argusmnts, file name and file contents.  You create a file with text content of "this is text"
+
+less     if you are writing files or cookies there are limits on how big they can be, but with writeFileSync there is no limit.  This is the synchronous version of writing and reading files.
+
+fs.writeFileSync is synchronous which means it is blocking the code underneath it
+
+fs.writeFile()  is a callback that is asycnchronous and code underneath it can be executed immediately
+
+fs.readFileSync  also take 2 args, a file to read "./notes.txt", "utf-8"
+is synchronous and will return the text of the file
+console.log(contents)
+
+utf-8 is the kind of code, tells node what kind of file it is reading or you will get bytes
+
+CHALLENGE 2
+write a script that copies a file given at the command line.  
+
+node copy.js notes.txt
+
+should output a file called output.txt that has the same content as the notes
+
+
+
+
+in the javascript you would type
+
+var fs = require("fs")
+
+var contents = fs.readFileSync (".notes.txt", "utf-8")
+
+fs.writeFileSync("/Users/raphael/output.txt", contents)
+
+absolute paths start with "/"
+
+NPM is not an acronym.  It is what we use to dwnload and instll things.
+
+if you have node you have npm.
+say you have a project and you want to use underscore'
+
+type in commandline
+
+npm install underscore
+
+You will get a new folder with node modules, in it will be underscore, look in that and you will see what underscore needs to do it's job
+
+Go back to js code and require
+
+var _ = require("underscore")
+
+console.log(_.max[1,2,3]) 
+
+require is a function and can be named anything you like
+
+whatever modules you have in your node modules folder can be "required"
+
+
+the whole underscore library is now available to you
+
+require is a function that will look around for what you want to require
+it will also look in your node modules folder and/or check to see if you
+gave it a path to another javascript folder
+
+You may have lots of things you need to install (dependencies)
+
+command "touch package.json"
+
+use the command "mpm init"  mpm init --save
+
+hit enter to confirm the default information
+
+"entry point" is the first file that needs to be run to start the app
+
+How to add dependencies
+
+use 
+
+
+see output-- projects have a 3 number format number for versioning
+called semVer or semantic versioning
+the first number is the MAJOR VERSION number,  when it gets increased it means breaking changes were added/introduced!
+
+be careful about updating to the next version
+
+second number is the MINOR VERSION which means that new features were added
+that will not break your old code, so you can update without fear that your
+code will be broken
+
+third number is  the PATCH NUMBER which indicates bug fixes
+doesn't change how you use the library, can be safely upgraded without breaking your project
+
+the tilde means it locks the major version numbers but the other 2 can be changed
+ex. when you push to github you don't typically include the node modules-- don't need to keep track of all the info
+
+so you create a file called git ignore
+
+command  mkdir gitignore
+
+node_modules
+
+.DS_Store
+
+
+
+run "npm install" to call back the ignored info first thing
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

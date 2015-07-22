@@ -1,0 +1,50 @@
+	var http = require("http")
+
+	varserver = http.createServer(function(request, ) {
+		response.writeHead(200, { "Content-Type" : "text/plain "})
+		response.end("h1>hello </h1>")
+
+	})
+
+	server.listen(9001)
+
+
+
+	in browser bar type in localport:9001
+
+	our server is passive and spends time waiting for requests
+	we need to define what a server will do when it receives a request
+
+	above we have created a server and defined what it will do when we get a request
+	every http req or resp has headers, like the info on the outside of a letter
+
+	the 200 is a status code.  200 means thumbs up, it worked out. Indicates to client that you recieved the request, understood it, created a response and am sending it back to you
+
+	404 means file not found
+	500 means the server threw an error
+	so no answer for you
+
+	most common are 200, 404, and 500
+
+in {} shows the kind of information sent(images, text, css, javascript)
+
+9001 is our port number
+a port is like a port on a dock
+your computer has its own address
+the entire dock has an IP address and then each port on the dock has its own port address
+
+usually this is port 80
+
+You will want to use high-number (4-digit) ports as the lower numbers are reserved
+for specific things
+
+Once the response is sent the client stops listening
+
+You need to restart your server each time you make a request
+
+You are actually sending two requests everytime you send a reqeust to a web page
+
+a post request has a body
+a get request does not have a body so you have to attach data in the url bar string
+
+You can have multiple ports on one server

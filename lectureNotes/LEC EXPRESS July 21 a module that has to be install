@@ -1,0 +1,391 @@
+LEC EXPRESS July   a module that has to be installed
+
+Type in Yo
+Use the RefactorU express generator
+
+the entry point to our application is 
+var express = require("express");
+
+var app = express():
+app.set("view engine", "jade");
+app.set("views", __dirname + "/views");
+
+app.get("/", function(req, res) {
+	
+	res.render("index");
+});
+
+
+
+var server = app.listen(6215, function) {
+
+console.log("Express server listening on port " + server.address().port);
+	
+
+
+
+});
+
+
+
+app.set statements are setting configuration settings
+runs once when you type app.js to set up a configuration
+
+app.set("view engine", 
+
+
+
+express converts html into a jade file
+jade gets turned into html and lives in the views folder
+app.set("view engine", "jade");
+
+we also need to tell express where our jade templates are at
+
+__dirname refers to the path of the directory where you are running
+your app from.  You can refer to your jade templates by name later on and we havve
+already told express where they are
+
+app.get defines a route.  if we receive a get request to the root of our home page, run
+this function.  get is one type of http request
+
+a get request;  type a Url into the url bar in browser that sends a get request to that site
+minimally app.get needs 2 arguments
+the first is which url are we expecting to receive the get request-- the slash means the root of our application.  when we define routes we don't need the full url.  you only need the end part of the url-- the slash means the homepage
+
+You get a callback-- what do you do when you receive a request at that location
+
+someone sends a get request *types in url in their url bar"
+
+there is a request object, the callback function is invoked, passed to express, and then there is a response object.  The they are show
+
+RENDER
+
+render finds a template, turns it into html, and sends it
+
+
+we tell express we are using jade, where templates are, 
+
+res.render("index");
+
+You can create as many views or jade templates as you want and keep them in your views folder
+
+*request and response are objects*
+
+callback takes 2 parameters, a req and a e object
+
+
+response.render looks up the jade template you told it to and turns the jade file into html and then internally express will res.send the rendered html.
+
+res.render will do a res.send -- sends html to the client and that is the end of the callback.  response to req has been received'
+
+render or send will be the last thing you do on a route
+
+you can do other things after but only on the server for housekeeping; you can't send anytHing more to the client
+
+we call listen on our app object, pass in a port and a callback function that runs as soon as the app is running.  we need our server to listen on the port and get ready for requests
+
+
+if you want to make changes
+
+NODEMON auto restarts your server
+
+
+all -g nodemon    in command line run this install
+
+use sudo
+
+sudo npm install -g nodemon
+
+g=global    not installed to a project but generally to the machine 
+
+to start server
+
+nodemon app.js
+
+watches your server for changes and knows when to restart your server
+
+type nodemon app.js and server will automatically restart
+
+if you want to create another route...
+
+app.get("/about", function(req, res) {
+	
+
+
+
+})
+
+Each jade view more or less relates to a single page; usually each page on your site will have a unique jade template
+
+extends layout
+
+
+Above is a basic express stuff
+
+??????????????????????????????????????????????????????????????????????????????????????????????
+
+Fancier express stuff..
+
+Now scaffold out in you in a new empty folder and say "yes"
+to evertthing
+
+app
+
+"require" express as before and then you need the bodyParser to receive data from post requests.
+get requests are url bar.  The other is "post"
+
+
+get and POST satisfy 95% of your needs
+
+you usually receiuve a post request from a foorm
+
+var bodyParser = require(body-parser)
+
+Forms usually have 
+info from user comes in request.bod
+so we need the bodyParser
+
+
+You will need the bodyParser
+
+Because
+you can ONLY TRANSMIT STRINGS OVER HTTP. YOU CAN'T SEND NUMBERS, OBJECTS, OR ARRAYS OVER THE WIRE
+
+THE form elements must get converted into a string so you can send it, which jquery will do the string for you
+you are sending text strings, not objects, over the internet
+
+bodyParser auto converts strings back into javascript objects or arrays or numbers (non-string data)
+
+bodyParser attaches the form data from the body of the post reqeust onto
+name attributes in html form becomes the key in req.body
+
+req.body
+
+app.post("contact", function(req, res)
+
+all of the inputs in your form become the body in your request
+
+app.post prepares to recieve a post request thru a route
+
+req.body is an object with 2 attributes ex.  name, complaint on a contact form
+
+these become keys in rec.body
+
+you can pick a part to see, for example an h1
+
+req.body.complaint whould show just the complaint section of a form
+
+the name attribute in our html form becomes the key in req.body
+
+
+In javascript:
+
+extend layout
+
+block content
+	h1 Hello Boulder!
+
+		form(method="POST" action="/contact")
+			input(name="first-name")
+			input(name="complaint
+			input(type="submit")
+		
+
+
+
+
+
+if someone tries to send a form without a name attribute, the form will not be sent
+
+
+app.use statements in express indicates that we are declaring middleware, which in express is a function that runs in the middle of things.  there are 2 kinds of middleware
+
+application-level middleware      app.set statements only run once in the lifetime of an app but app.use runs on every request
+
+if we receive a post request to /contact, express will start at the top of the file and look for the first piece of middleware.  
+
+BODYPARSER converts strings to objects
+
+
+bodyParser is middleware that converts string to object
+
+You must do bodyParser BEFORE you check any of the routes
+
+if bodyParser is below the post, it would be useless.  Parsing the body must happen before you check any of routes;  get request to homepage?  post requesst to contact?  etc.
+
+express checks middleware and routes from top to bottom and once it responds it stops checking
+
+http is all about req and res, user wants a req.  even if you don't have anything really to say you have to send something back
+
+res.send("roger that!")
+res.redirect(PUT IN A ROUTE) "/" means homepage
+
+post-redirect-get is a common pattern
+
+common
+
+res.send
+res.render
+res.redirect  need to do one of these 3 responses anytime you recieve a request, don't leave the client hanging!
+
+
+STATIC express is another piece of middleware that says we are declaring that as our public folder so users can access our public folder
+
+We access them one by one.  You might have a dozen css files and 100 images but you doon't want to write a route for each one so...put them in the public folder
+
+static express middleware will auto make routes for you if you put things in a public folder so that files can be requested by name.  Put all your front-end stuff in the public folder, but not your html!
+
+most used for css and client-side javascript and jquery files and images in your public folder so you don't have to write individual routes for each file
+
+the middleware checks on every request
+
+indexController is about architecture
+
+app.js is supposed to be a high=level overview that gives someone a brief explanation of what your app does
+
+a route is a url that your server is prepared to recieve requests to
+
+a callback is the route handler that describes what we do when we receive a request at that route
+
+keep your route logic in your controller.  Controllers are just about routes, what you do when you receive requests at different routes.  does not change how you organize your files.  
+
+
+MVC is a framework but is not for everything, don't have to make all your stuff fit it.
+Model-View-Controller  the idea is to keep view and data separate with the controller to connect them.  
+
+Web apps do a lot of complicated stuff.  
+
+mvc helps us (model view controller) keep track of everything.  
+The user sees the views but views are not smart.  
+The model is your data, typcially a database / js objects, for us might be mongo db.  
+The model should not be concerned about how the data is used or how the data is presented.
+
+The controller is the glue between the model and the view.  
+The controller connects the view with all of your data, which is in the model
+
+The controller sees reqeust and decides where to go to satisfy the request with the right info
+The controlloer organizes data in a useful way so that it means something in the view
+
+
+A QUERY STRING IS THE ONLY WAY TO ATTACH DATA TO A REQUEST BUT IT IS NOT VERY SECURE-- IT IS FOR PUBLIC INFO ONLY  Have to type key:value pairs and use & in between each kv pair if there is more than one.  
+
+Another way to attach data -- express lets us do paramaterized urls that
+
+app.get("/:page", function(req, res) {
+	console.log(req.params)
+
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
